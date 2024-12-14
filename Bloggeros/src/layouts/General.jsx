@@ -25,6 +25,11 @@ const router = createBrowserRouter([
         errorElement: <NotFound /> 
     },
     {
+        path: '/blogedit/:blogId',
+        element: <BlogCreate/>,
+        errorElement: <NotFound /> 
+    },
+    {
         path: '/about',
         element: <About />,
         errorElement: <NotFound /> 
