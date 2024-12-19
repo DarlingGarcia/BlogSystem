@@ -110,7 +110,8 @@ function BlogList()
                         </select>
 
                         <section className="flex flex-row flex-nowrap gap-x-1 items-center">
-                            <input className='border border-solid border-black' type="text" id="searchBar" onKeyDown={handleKeyDown}/>
+                            <input className='border border-solid border-black' type="text" id="searchBar" 
+                            onKeyDown={handleKeyDown} placeholder='buscar por titulo o contenido'/>
                             <button onClick={handleSearchChange}>
                                 <img className='w-6 h-6' src="../../public/search.svg" />
                             </button>
