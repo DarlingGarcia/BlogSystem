@@ -1,0 +1,52 @@
+.verticalText3Rows {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-link {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+  background: #2b6ebb;
+  color: #fff;
+  width: 60%;
+  margin: auto;
+  border-radius: 20px;
+  box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.post-link-orange {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+  background: #cf9007;
+  color: #fff;
+  width: 30%;
+  margin: auto;
+  border-radius: 20px;
+  box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.post-link-red {
+  display: block;
+  text-decoration: none;
+  padding: 10px;
+  background: #c51e12;
+  color: #fff;
+  width: 30%;
+  margin: auto;
+  border-radius: 20px;
+  box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+}
+
+.post-link:hover {
+  background: #3378c7;
+  box-shadow: 1px 2px 6px 1px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}

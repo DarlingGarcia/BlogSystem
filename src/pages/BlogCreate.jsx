@@ -1,17 +1,42 @@
 import { useParams } from "react-router"
 import React, { useState } from 'react';
+import { Button } from "@material-tailwind/react";
+import DialogDefault from "../components/DialogDefault";
 
 function BlogCreate()
 {
 
-    const blogs = JSON.parse(localStorage.getItem('blogs')) || [];
+
+    const getBlogs = () => {
+        let localBlogs = JSON.parse(localStorage.getItem('blogs'))
+
+        if(!localBlogs){
+            return []
+        }
+
+        return localBlogs;
+    }
+
+    const [blogIndex, setBlogIndex] = useState(-1);
+
+    const getBlog = () => {
+        return blogs.find((blog,index) => {
+            if(blog.id == blogId){
+                setBlogIndex(index)
+                return true 
+            }})
+    }
+
     const { blogId } = useParams();
-    let blogIndex = -1;
-    const blog = blogs.find((blog,index) => {if(blog.id == blogId){blogIndex = index; return true }}) || { title: '', content: '', category: '', imageUrl: ''};
-    const [title, setTitle] = useState(blog.title);
-    const [content, setContent] = useState(blog.content);
-    const [category, setCategory] = useState(blog.category); 
-    const [imageUrl, setImageUrl] = useState(blog.imageUrl); 
+    const [blogs, setBlogs] = useState(getBlogs);
+    const [blog, setBlog] = useState(getBlog);
+
+    const [title, setTitle] = useState(blog ? blog.title : '');
+    const [content, setContent] = useState(blog ? blog.content : '');
+    const [category, setCategory] = useState(blog ? blog.category : ''); 
+    const [imageUrl, setImageUrl] = useState(blog ? blog.imageUrl : '');
+
+    const [dialogFlag, setDialogFlag] = useState(false);
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value); // Update state when the input changes
@@ -51,9 +76,10 @@ function BlogCreate()
         allBlogs.splice(blogIndex, 1, blogBody);
 
         localStorage.setItem('blogs',JSON.stringify(allBlogs))
+        toggleDialogFlag();
     }
 
-    const createBlog = async (event) => {
+    const createBlog = (event) => {
         event.preventDefault();
 
         const form = document.getElementById('newBlogForm')
@@ -113,8 +139,24 @@ function BlogCreate()
 
         // de objeto javascript a string para guardar en localStorage
         localStorage.setItem("blogs", JSON.stringify(allBlogs))
+        toggleDialogFlag();
     }
 
+    const emptyFields = () => {
+        setTitle('');
+        setContent('');
+        setCategory('');
+        setImageUrl('');
+    }
+    const toggleDialogFlag = () => {
+        setDialogFlag(!dialogFlag)
+
+        // si se crea un blog. Vacia los campos
+        if( !dialogFlag && !blogId){
+            emptyFields();
+        }
+    }
+    
     return(
         <section className="flex flex-col w-4/5 m-auto">
             <h1 className="text-xl mb-3 font-semibold">{blogId ? 'Edita' : 'Crea'} tu blog</h1>
@@ -144,9 +186,13 @@ function BlogCreate()
                     placeholder="Inserta texto" value={content} onChange={handleContentChange} ></textarea>
                 </section>
 
-                <input className="cursor-pointer p-1.5 bg-slate-400 rounded-sm w-24" 
-                onClick={createBlog} value={`${blogId ? 'Edita' : 'Crea'} blog`} type="submit"/>
+                <Button onClick={createBlog} variant="gradient" className="w-1/4">
+                    {`${blogId ? 'Edita' : 'Crea'} blog`}
+                </Button>
+                {/* <input className="cursor-pointer p-1.5 bg-gray-400 rounded-sm w-24" 
+                onClick={createBlog} value= type="submit"/> */}
             </form>
+            <DialogDefault open={dialogFlag} toggleDialogFlag={toggleDialogFlag} isCreating={blogId ? false : true} />
         </section>
     )
 }

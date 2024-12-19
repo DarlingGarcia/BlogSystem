@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router";
-import '../assets/css/BlogList.css';
+import ContentCard from '../components/ContentCard';
 
 function BlogList()
 {
@@ -85,8 +84,6 @@ function BlogList()
         setBlogs(localStorageBlogs)
         setCategories(localStorageBlogsStart ? localStorageBlogsStart.map(blog => blog.category) : '')
     }
-
-    const navigate = useNavigate()
     return(
         <>
             {
@@ -120,32 +117,12 @@ function BlogList()
                             
                         </section>
                     </div>
-                    <section className="post-list">
+                    <section className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3 px-2 md:px-4">
+                        {blogs.map(({id, title, content, category, imageUrl}, index) => (
+                                <ContentCard key={id} id={id} img={imageUrl} title={title} 
+                                desc={content} category={category} index={index} onTriggerDelete={handleDelete}/>
+                        ))}
                         
-                        <div className="content">
-                            {blogs.map((blog,index) => (
-                                <article className="post" key={index}>
-                                    <div className="post-header">
-                                        <div className="post-img" style = {{backgroundImage: `url(${blog.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center'}}></div>
-                                    </div>
-                                    <div className="post-body">
-                                        <span>{formatIdToDate(blog.id)} | <em className="border underline">{blog.category}</em></span>
-                                        <h2>{blog.title}</h2>
-                                        <p className="descripcion">{blog.content}</p>
-                                        <div className='w-full flex flex-row flex-wrap gap-2 items-center justify-center'>
-                                            <button className="post-link-orange" onClick={() => navigate(`/blogedit/${blog.id}`)}>
-                                                Editar 
-                                            </button>
-                                            <button className="post-link-red" onClick={() => {handleDelete(index)}}>
-                                                Eliminar
-                                            </button>
-                                            <button className="post-link" onClick={() => navigate(`/blog/${blog.id}`)}> Leer mas... </button>
-                                        </div>
-                                    </div>
-                                </article>
-                            ))}
-                            
-                        </div>
                     </section>
                 </div>
             }
